@@ -502,7 +502,7 @@ class Bundler::Thor
         msg = "ERROR: \"#{basename} #{name}\" was called with ".dup
         msg << "no arguments"               if     args.empty?
         msg << "arguments " << args.inspect unless args.empty?
-        msg << "\nUsage: #{banner(command).inspect}"
+        msg << "\nUsage: \"#{banner(command).split("\n").join("\"\n       \"")}\""
         raise InvocationError, msg
       end
 
