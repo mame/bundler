@@ -171,7 +171,7 @@ class Bundler::Thor
     end
 
     def switch?(arg)
-      switch_option(normalize_switch(arg))
+      !switch_option(normalize_switch(arg)).nil?
     end
 
     def switch_option(arg)
@@ -204,7 +204,7 @@ class Bundler::Thor
           shift
           false
         else
-          !no_or_skip?(switch)
+          @switches.key?(switch) || !no_or_skip?(switch)
         end
       else
         @switches.key?(switch) || !no_or_skip?(switch)
