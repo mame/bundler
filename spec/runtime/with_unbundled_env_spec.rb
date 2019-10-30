@@ -127,13 +127,17 @@ RSpec.describe "Bundler.with_env helpers" do
   describe "Bundler.with_clean_env", :bundler => 2 do
     it "should set ENV to unbundled_env in the block" do
       expected = Bundler.unbundled_env
-      actual = Bundler.with_clean_env { ENV.to_hash }
+
+      actual = Bundler.ui.silence do
+        Bundler.with_clean_env { ENV.to_hash }
+      end
+
       expect(actual).to eq(expected)
     end
 
     it "should restore the environment after execution" do
-      Bundler.with_clean_env do
-        ENV["FOO"] = "hello"
+      Bundler.ui.silence do
+        Bundler.with_clean_env { ENV["FOO"] = "hello" }
       end
 
       expect(ENV).not_to have_key("FOO")
@@ -175,7 +179,7 @@ RSpec.describe "Bundler.with_env helpers" do
   describe "Bundler.clean_system", :bundler => 2 do
     let(:code) do
       <<~RUBY
-        Bundler.clean_system(%([ "\$BUNDLE_FOO" = "bar" ] || exit 42))
+        Bundler.ui.silence { Bundler.clean_system(%([ "\$BUNDLE_FOO" = "bar" ] || exit 42)) }
 
         exit $?.exitstatus
       RUBY
@@ -230,7 +234,7 @@ RSpec.describe "Bundler.with_env helpers" do
     let(:code) do
       <<~RUBY
         Process.fork do
-          exit Bundler.clean_exec(%(test "\$BUNDLE_FOO" = "bar"))
+          exit Bundler.ui.silence { Bundler.clean_exec(%(test "\$BUNDLE_FOO" = "bar")) }
         end
 
         _, status = Process.wait2
