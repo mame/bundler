@@ -172,7 +172,6 @@ RSpec.describe "Bundler.with_env helpers" do
     end
 
     it "runs system inside with_original_env" do
-      lib = File.expand_path("../../lib", __dir__)
       system({ "BUNDLE_FOO" => "bar" }, "ruby -I#{lib} -rbundler -e '#{code}'")
       expect($?.exitstatus).to eq(42)
     end
@@ -190,7 +189,6 @@ RSpec.describe "Bundler.with_env helpers" do
     end
 
     it "runs system inside with_clean_env" do
-      lib = File.expand_path("../../lib", __dir__)
       system({ "BUNDLE_FOO" => "bar" }, "ruby -I#{lib}:#{spec_dir} -rsupport/streams -rbundler -e '#{code}'")
       expect($?.exitstatus).to eq(42)
     end
@@ -206,7 +204,6 @@ RSpec.describe "Bundler.with_env helpers" do
     end
 
     it "runs system inside with_unbundled_env" do
-      lib = File.expand_path("../../lib", __dir__)
       system({ "BUNDLE_FOO" => "bar" }, "ruby -I#{lib} -rbundler -e '#{code}'")
       expect($?.exitstatus).to eq(42)
     end
@@ -228,7 +225,6 @@ RSpec.describe "Bundler.with_env helpers" do
     it "runs exec inside with_original_env" do
       skip "Fork not implemented" if Gem.win_platform?
 
-      lib = File.expand_path("../../lib", __dir__)
       system({ "BUNDLE_FOO" => "bar" }, "ruby -I#{lib} -rbundler -e '#{code}'")
       expect($?.exitstatus).to eq(0)
     end
@@ -252,7 +248,6 @@ RSpec.describe "Bundler.with_env helpers" do
     it "runs exec inside with_clean_env" do
       skip "Fork not implemented" if Gem.win_platform?
 
-      lib = File.expand_path("../../lib", __dir__)
       system({ "BUNDLE_FOO" => "bar" }, "ruby -I#{lib}:#{spec_dir} -rsupport/streams -rbundler -e '#{code}'")
       expect($?.exitstatus).to eq(1)
     end
@@ -274,7 +269,6 @@ RSpec.describe "Bundler.with_env helpers" do
     it "runs exec inside with_clean_env" do
       skip "Fork not implemented" if Gem.win_platform?
 
-      lib = File.expand_path("../../lib", __dir__)
       system({ "BUNDLE_FOO" => "bar" }, "ruby -I#{lib} -rbundler -e '#{code}'")
       expect($?.exitstatus).to eq(1)
     end
